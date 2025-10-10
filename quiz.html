@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Quiz: Tecnologias Emergentes</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f4f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+    .quiz-container {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      max-width: 600px;
+      width: 100%;
+      padding: 30px;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    .question {
+      font-size: 1.2em;
+      margin-bottom: 15px;
+    }
+    .options {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 20px;
+    }
+    .options li {
+      margin-bottom: 10px;
+    }
+    .options input[type="radio"] {
+      margin-right: 10px;
+    }
+    button {
+      background-color: #1e3831;
+      border: none;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1em;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #1e3831;
+    }
+    #score {
+      font-size: 1.2em;
+      margin-top: 20px;
+      text-align: center;
+      color: #222;
+    }
+    #reset-btn {
+      background-color: #2e554b;
+      margin-top: 15px;
+      width: 100%;
+    }
+    #reset-btn:hover {
+      background-color: #1e3831;
+    }
+  </style>
+</head>
+<body>
+  
+  <div class="quiz-container">
+    <h1>Quiz: Tecnologias Emergentes</h1>
+    <div id="quiz">
+      <!-- Pergunta e opções serão inseridas aqui pelo JS -->
+    </div>
+    <button id="submit-btn">Responder</button>
+    <a href="index.html">
+    <button>Voltar para a página inicial</button>
+  </a>
+    <div id="score"></div>
+    <button id="reset-btn" style="display:none;">Resetar Quiz</button>
+  </div>
+
+  
+  <script>
+    const quizData = [
+      {
+        question: "O que significa a sigla IoT?",
+        options: [
+          "Integration of Things.",
+          "Internet of Things.",
+          "Internet of Technology.",
+          "Intelligence of Tools."
+        ],
+        correct: 1
+      },
+      {
+        question: "Qual dessas tecnologias está relacionada a carros autônomos?",
+        options: [
+          "Blockchain",
+          "Inteligência Artificial",
+          "Realidade Aumentada",
+          "5G"
+        ],
+        correct: 1
+      },
+      {
+        question: "O que é Blockchain?",
+        options: [
+          "Uma rede social popular.",
+          "Um banco de dados descentralizado e seguro.",
+          "Um tipo de inteligência artificial.",
+          "Um dispositivo de armazenamento."
+        ],
+        correct: 1
+      },
+      {
+        question: "Qual tecnologia permite conectar dispositivos com alta velocidade e baixa latência?",
+        options: [
+          "5G",
+          "Internet das Coisas (IoT)",
+          "Realidade Virtual",
+          "Computação em Nuvem"
+        ],
+        correct: 0
+      },
+      {
+        question: "O que é Realidade Aumentada?",
+        options: [
+          "Simulação completa de ambientes virtuais.",
+          "Sobreposição de elementos virtuais no mundo real.",
+          "Um tipo de inteligência artificial.",
+          "Uma nova linguagem de programação."
+        ],
+        correct: 1
+      }
+    ];
+
+    const quizContainer = document.getElementById('quiz');
+    const submitBtn = document.getElementById('submit-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const scoreDisplay = document.getElementById('score');
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    function loadQuestion() {
+      const q = quizData[currentQuestion];
+      const optionsHTML = q.options.map((option, index) => 
+        `<li>
+          <label>
+            <input type="radio" name="option" value="${index}" />
+            ${option}
+          </label>
+        </li>`
+      ).join('');
+
+      quizContainer.innerHTML = `
+        <div class="question">${currentQuestion + 1}. ${q.question}</div>
+        <ul class="options">${optionsHTML}</ul>
+      `;
+    }
+
+    function getSelected() {
+      const options = document.getElementsByName('option');
+      for (const option of options) {
+        if (option.checked) {
+          return parseInt(option.value);
+        }
+      }
+      return null;
+    }
+
+    submitBtn.addEventListener('click', () => {
+      const selected = getSelected();
+      if (selected === null) {
+        alert("Por favor, selecione uma resposta.");
+        return;
+      }
+
+      if (selected === quizData[currentQuestion].correct) {
+        score++;
+      }
+
+      currentQuestion++;
+
+      if (currentQuestion < quizData.length) {
+        loadQuestion();
+      } else {
+        quizContainer.innerHTML = `<h2>Quiz finalizado!</h2>`;
+        scoreDisplay.textContent = `Sua pontuação: ${score} / ${quizData.length}`;
+        submitBtn.style.display = 'none';
+        resetBtn.style.display = 'block';
+      }
+    });
+
+    resetBtn.addEventListener('click', () => {
+      currentQuestion = 0;
+      score = 0;
+      scoreDisplay.textContent = '';
+      submitBtn.style.display = 'inline-block';
+      resetBtn.style.display = 'none';
+      loadQuestion();
+    });
+
+    // Inicia o quiz
+    loadQuestion();
+  </script>
+</body>
+</html>

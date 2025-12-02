@@ -143,6 +143,15 @@ ul a:hover {
   border: 1px solid #63997a;
   border-radius: 10px;
   cursor: pointer;
+  
+}
+
+@media (max-width: 768px) {
+.card {
+width: 100%;
+padding: 15px;
+margin: 10px 0;
+}
 }
 
 .texto-oculto {
